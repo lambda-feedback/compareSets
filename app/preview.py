@@ -1,13 +1,6 @@
-from typing import Any, TypedDict
-
-
-class Params(TypedDict):
-    pass
-
-
-class Result(TypedDict):
-    preview: Any
-
+from typing import Any
+from lf_toolkit.preview import Result, Params, Preview
+from lf_toolkit.parse.set import SetParser, LatexPrinter, ASCIIPrinter
 
 def preview_function(response: Any, params: Params) -> Result:
     """
@@ -29,4 +22,20 @@ def preview_function(response: Any, params: Params) -> Result:
     The way you wish to structure you code (all in this function, or
     split into many) is entirely up to you.
     """
-    return Result(preview=response)
+
+    parser = SetParser.instance()
+    result = parser.parse(response, latex=params.is_latex)
+
+    latexPrinter = LatexPrinter()
+    latex = latexPrinter.print(result)
+
+    asciiPrinter = ASCIIPrinter()
+    ascii = asciiPrinter.print(result)
+
+    preview = Preview(
+        latex=latex,
+        sympy=ascii,
+        feedback="",
+    )
+
+    return Result(preview=preview)

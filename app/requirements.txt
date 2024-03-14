@@ -1,0 +1,3 @@
+typing_extensions
+pytest
+git+https://github.com/lambda-feedback/toolkit-python.git@main#egg=lf_toolkit

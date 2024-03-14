@@ -1,15 +1,8 @@
-from typing import Any, TypedDict
+from typing import Any
+from lf_toolkit.evaluation import Result, Params
+from lf_toolkit.parse.set import SetParser, LatexPrinter, SymPyTransformer
 
-
-class Params(TypedDict):
-    pass
-
-
-class Result(TypedDict):
-    is_correct: bool
-
-
-def evaluation_function(response: Any, answer: Any, params: Params) -> Result:
+def evaluation_function(response: Any, answer: Any, params: Params, include_test_data: bool = False) -> Result:
     """
     Function used to evaluate a student response.
     ---
@@ -33,4 +26,33 @@ def evaluation_function(response: Any, answer: Any, params: Params) -> Result:
     to output the evaluation response.
     """
 
-    return Result(is_correct=True)
+    parser = SetParser.instance()
+    sympyTransformer = SymPyTransformer()
+
+    # here we want to compare the response set with the example solution set.
+    # we have to do the following steps
+
+    # 1. convert the `response`, which may be a latex string, to a sympy expression
+    responseSet = parser.parse(response, latex=params.get("is_latex", False))
+    responseSetSympy = sympyTransformer.transform(responseSet)
+
+    # 2. convert the `answer`, which may be a latex string, to a sympy expression
+    # TODO: what if answer is also in latex? how do we know?
+    answerSet = parser.parse(answer, latex=False)
+    answerSetSympy = sympyTransformer.transform(answerSet)
+
+    # 3. TODO: compare the two sympy expressions w/ simplification enabled. If they are equal, the sets produced by the two expressions are equal. However, the expressions may not be equal.
+    # 4. compare the two sympy expressions w/ simplifaction disabled. If they are equal, the expressions are also equal.
+    # 5a. TODO: If `params.enforce_expression_equality` is True, `is_correct` is True iff both 3) and 4) are True.
+    # 5b. If `params.enforce_expression_equality` is False, `is_correct` is True iff 3) is True.
+    is_correct = responseSetSympy == answerSetSympy
+
+    latexPrinter = LatexPrinter()
+    latex = latexPrinter.print(result)
+
+    result = Result(
+        latex=latex,
+        is_correct=is_correct,
+    )
+
+    return result.serialise(include_test_data)
