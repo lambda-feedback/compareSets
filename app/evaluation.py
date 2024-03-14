@@ -48,7 +48,7 @@ def evaluation_function(response: Any, answer: Any, params: Params, include_test
     is_correct = responseSetSympy == answerSetSympy
 
     latexPrinter = LatexPrinter()
-    latex = latexPrinter.print(result)
+    latex = latexPrinter.print(responseSet)
 
     result = Result(
         latex=latex,
