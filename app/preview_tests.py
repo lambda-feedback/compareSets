@@ -26,7 +26,7 @@ class TestPreviewFunction(unittest.TestCase):
     """
 
     def test_returns_preview_key(self):
-        response, params = "test", Params()
+        response, params = "A", Params()
         result = preview_function(response, params)
 
         self.assertIn("preview", result)

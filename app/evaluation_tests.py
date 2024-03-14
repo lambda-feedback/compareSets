@@ -26,7 +26,8 @@ class TestEvaluationFunction(unittest.TestCase):
     """
 
     def test_returns_is_correct_true(self):
-        response, answer, params = None, None, Params()
+        response, answer, params = "A n B", "A n B", Params()
+
         result = evaluation_function(response, answer, params)
 
         self.assertEqual(result.get("is_correct"), True)

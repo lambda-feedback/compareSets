@@ -24,7 +24,7 @@ def preview_function(response: Any, params: Params) -> Result:
     """
 
     parser = SetParser.instance()
-    result = parser.parse(response, latex=params.is_latex)
+    result = parser.parse(response, latex=params.get("is_latex", False))
 
     latexPrinter = LatexPrinter()
     latex = latexPrinter.print(result)
