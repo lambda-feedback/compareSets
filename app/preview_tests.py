@@ -32,13 +32,13 @@ class TestPreviewFunction(unittest.TestCase):
         self.assertIn("preview", result)
         self.assertIsNotNone(result["preview"])
 
-    def test_returns_preview_ascii(self):
+    def test_returns_preview_sympy(self):
         response, params = "A n B", Params()
 
         result = preview_function(response, params)
 
         self.assertIn("preview", result)
-        self.assertEqual(result["preview"]["ascii"], "A n B")
+        self.assertEqual(result["preview"]["sympy"], "A n B")
 
     def test_returns_preview_latex(self):
         response, params = "A \\cap B", Params(is_latex=True)
