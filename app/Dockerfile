@@ -1,5 +1,6 @@
 # Base image that bundles AWS Lambda Python 3.8 image with some middleware functions
-# FROM base-eval-tmp
+
+# TODO: change the base image tag to the latest version
 FROM ghcr.io/lambda-feedback/baseevalutionfunctionlayer:pr-10-3.9
 
 # Install git so we can install python packages from git repositories
