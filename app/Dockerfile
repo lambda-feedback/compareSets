@@ -14,6 +14,7 @@ COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
 # Copy helpers
+COPY __init__.py ./app/
 COPY parse.py ./app/
 
 # Copy the evaluation and testing scripts
