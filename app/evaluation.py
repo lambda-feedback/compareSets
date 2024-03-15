@@ -1,6 +1,6 @@
 from typing import Any
 from lf_toolkit.evaluation import Result, Params
-from lf_toolkit.parse.set import SetParser, LatexPrinter, SymPyTransformer
+from lf_toolkit.parse.set import SetParser, LatexPrinter, SymPyTransformer, ASCIIPrinter
 
 # TODO: this is hacky, we need another way to bundle up everything.
 try:
@@ -57,12 +57,14 @@ def evaluation_function(response: Any, answer: Any, params: Params, include_test
         latexPrinter = LatexPrinter()
         latex = latexPrinter.print(responseSet)
 
-        result = Result(
-            latex=latex,
-            is_correct=is_correct,
-        )
+        asciiPrinter = ASCIIPrinter()
+        ascii = asciiPrinter.print(responseSet)
 
-        return result.to_dict(include_test_data=include_test_data)
+        return Result(
+            is_correct=is_correct,
+            latex=latex,
+            simplified=ascii,
+        ).to_dict(include_test_data=include_test_data)
     except FeedbackException as e:
         return Result(
             is_correct=False,
