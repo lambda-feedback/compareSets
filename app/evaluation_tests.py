@@ -25,13 +25,37 @@ class TestEvaluationFunction(unittest.TestCase):
     as it should.
     """
 
-    def test_returns_is_correct_true(self):
+    def test_returns_is_correct_true_ascii(self):
         response, answer, params = "A n B", "A n B", Params()
 
         result = evaluation_function(response, answer, params)
 
         self.assertEqual(result.get("is_correct"), True)
+        self.assertEqual(result.get("response_latex"), "A \\cap B")
 
+    def test_returns_is_correct_true_latex(self):
+        response, answer, params = "A \\cap B", "A n B", Params(is_latex=True)
+
+        result = evaluation_function(response, answer, params)
+
+        self.assertEqual(result.get("is_correct"), True)
+        self.assertEqual(result.get("response_latex"), "A \\cap B")
+
+    def test_returns_is_correct_false(self):
+        response, answer, params = "A n B", "A u B", Params()
+
+        result = evaluation_function(response, answer, params)
+
+        self.assertEqual(result.get("is_correct"), False)
+        self.assertEqual(result.get("response_latex"), "A \\cap B")
+
+    def test_returns_is_correct_false_not_parseable(self):
+        response, answer, params = "", "A u B", Params()
+
+        result = evaluation_function(response, answer, params)
+
+        self.assertEqual(result.get("is_correct"), False)
+        self.assertEqual(result.get("response_latex"), None)
 
 if __name__ == "__main__":
     unittest.main()

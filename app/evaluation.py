@@ -2,7 +2,13 @@ from typing import Any
 from lf_toolkit.evaluation import Result, Params
 from lf_toolkit.parse.set import SetParser, LatexPrinter, SymPyTransformer
 
-def evaluation_function(response: Any, answer: Any, params: Params, include_test_data: bool = False) -> Result:
+# TODO: this is hacky, we need another way to bundle up everything.
+try:
+    from .parse import parse_with_feedback, FeedbackException
+except:
+    from parse import parse_with_feedback, FeedbackException
+
+def evaluation_function(response: Any, answer: Any, params: Params, include_test_data: bool = False) -> dict:
     """
     Function used to evaluate a student response.
     ---
@@ -32,27 +38,38 @@ def evaluation_function(response: Any, answer: Any, params: Params, include_test
     # here we want to compare the response set with the example solution set.
     # we have to do the following steps
 
-    # 1. convert the `response`, which may be a latex string, to a sympy expression
-    responseSet = parser.parse(response, latex=params.get("is_latex", False))
-    responseSetSympy = sympyTransformer.transform(responseSet)
+    try:
+        # 1. convert the `response`, which may be a latex string, to a sympy expression
+        responseSet = parse_with_feedback(response, latex=params.get("is_latex", False))
+        responseSetSympy = sympyTransformer.transform(responseSet)
 
-    # 2. convert the `answer`, which may be a latex string, to a sympy expression
-    # TODO: what if answer is also in latex? how do we know?
-    answerSet = parser.parse(answer, latex=False)
-    answerSetSympy = sympyTransformer.transform(answerSet)
+        # 2. convert the `answer`, which may be a latex string, to a sympy expression
+        # TODO: what if answer is also in latex? how do we know?
+        answerSet = parser.parse(answer, latex=False)
+        answerSetSympy = sympyTransformer.transform(answerSet)
 
-    # 3. TODO: compare the two sympy expressions w/ simplification enabled. If they are equal, the sets produced by the two expressions are equal. However, the expressions may not be equal.
-    # 4. compare the two sympy expressions w/ simplifaction disabled. If they are equal, the expressions are also equal.
-    # 5a. TODO: If `params.enforce_expression_equality` is True, `is_correct` is True iff both 3) and 4) are True.
-    # 5b. If `params.enforce_expression_equality` is False, `is_correct` is True iff 3) is True.
-    is_correct = responseSetSympy == answerSetSympy
+        # 3. TODO: compare the two sympy expressions w/ simplification enabled. If they are equal, the sets produced by the two expressions are equal. However, the expressions may not be equal.
+        # 4. compare the two sympy expressions w/ simplifaction disabled. If they are equal, the expressions are also equal.
+        # 5a. TODO: If `params.enforce_expression_equality` is True, `is_correct` is True iff both 3) and 4) are True.
+        # 5b. If `params.enforce_expression_equality` is False, `is_correct` is True iff 3) is True.
+        is_correct = responseSetSympy == answerSetSympy
 
-    latexPrinter = LatexPrinter()
-    latex = latexPrinter.print(responseSet)
+        latexPrinter = LatexPrinter()
+        latex = latexPrinter.print(responseSet)
 
-    result = Result(
-        latex=latex,
-        is_correct=is_correct,
-    )
+        result = Result(
+            latex=latex,
+            is_correct=is_correct,
+        )
 
-    return result.serialise(include_test_data)
+        return result.to_dict(include_test_data=include_test_data)
+    except FeedbackException as e:
+        return Result(
+            is_correct=False,
+            feedback_items=[("parse_error", str(e))]
+        ).to_dict(include_test_data)
+    except Exception as e:
+        return Result(
+            is_correct=False,
+            feedback_items=[("error", str(e))]
+        ).to_dict(include_test_data)
