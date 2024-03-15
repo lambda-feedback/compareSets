@@ -1,7 +1,8 @@
 from typing import Any
 from lf_toolkit.preview import Result, Params, Preview
-from lf_toolkit.parse.set import SetParser, LatexPrinter, ASCIIPrinter
+from lf_toolkit.parse.set import LatexPrinter, ASCIIPrinter
 
+# TODO: this is hacky, we need another way to bundle up everything.
 try:
     from .parse import parse_with_feedback, FeedbackException
 except:
