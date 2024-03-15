@@ -2,6 +2,11 @@ from typing import Any
 from lf_toolkit.preview import Result, Params, Preview
 from lf_toolkit.parse.set import SetParser, LatexPrinter, ASCIIPrinter
 
+try:
+    from .parse import parse_with_feedback, FeedbackException
+except:
+    from parse import parse_with_feedback, FeedbackException
+
 def preview_function(response: Any, params: Params) -> Result:
     """
     Function used to preview a student response.
@@ -23,19 +28,17 @@ def preview_function(response: Any, params: Params) -> Result:
     split into many) is entirely up to you.
     """
 
-    parser = SetParser.instance()
-    result = parser.parse(response, latex=params.get("is_latex", False))
+    try:
+        result = parse_with_feedback(response, latex=params.get("is_latex", False))
 
-    latexPrinter = LatexPrinter()
-    latex = latexPrinter.print(result)
+        latexPrinter = LatexPrinter()
+        latex = latexPrinter.print(result)
 
-    asciiPrinter = ASCIIPrinter()
-    ascii = asciiPrinter.print(result)
+        asciiPrinter = ASCIIPrinter()
+        ascii = asciiPrinter.print(result)
 
-    preview = Preview(
-        latex=latex,
-        sympy=ascii,
-        feedback="",
-    )
-
-    return Result(preview=preview)
+        return Result(preview=Preview(latex=latex,sympy=ascii))
+    except FeedbackException as e:
+        return Result(preview=Preview(feedback=str(e)))
+    except Exception as e:
+        return Result(preview=Preview(feedback=str(e)))

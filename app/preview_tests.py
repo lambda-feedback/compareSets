@@ -39,6 +39,7 @@ class TestPreviewFunction(unittest.TestCase):
 
         self.assertIn("preview", result)
         self.assertEqual(result["preview"]["sympy"], "A n B")
+        self.assertRaises(KeyError, lambda: result["preview"]["feedback"])
 
     def test_returns_preview_latex(self):
         response, params = "A \\cap B", Params(is_latex=True)
@@ -47,6 +48,17 @@ class TestPreviewFunction(unittest.TestCase):
 
         self.assertIn("preview", result)
         self.assertEqual(result["preview"]["latex"], "A \\cap B")
+        self.assertRaises(KeyError, lambda: result["preview"]["feedback"])
+
+    def test_returns_none_not_parseable(self):
+        response, params = "A u", Params()
+
+        result = preview_function(response, params)
+
+        self.assertIn("preview", result)
+        self.assertIsNotNone(result["preview"]["feedback"])
+        self.assertRaises(KeyError, lambda: result["preview"]["sympy"])
+        self.assertRaises(KeyError, lambda: result["preview"]["latex"])
 
 
 if __name__ == "__main__":
