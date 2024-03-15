@@ -13,6 +13,9 @@ RUN yum update -y && \
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
+# Copy helpers
+COPY parse.py ./app/
+
 # Copy the evaluation and testing scripts
 COPY evaluation.py ./app/
 COPY evaluation_tests.py ./app/
@@ -20,6 +23,7 @@ COPY evaluation_tests.py ./app/
 # Copy the preview and testing scripts
 COPY preview.py ./app/
 COPY preview_tests.py ./app/
+
 
 # Copy Documentation
 COPY docs/dev.md ./app/docs/dev.md
