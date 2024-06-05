@@ -48,6 +48,10 @@ config.json # Specify the name of the evaluation function in this file
 
 The function is built on top of a custom base layer, [BaseEvaluationFunctionLayer](https://github.com/lambda-feedback/BaseEvalutionFunctionLayer), which contains tools, tests and schema checking relevant to all evaluation functions.
 
+### Parser
+
+The parser is built using the Lark library, which is a powerful and easy-to-use parsing library for Python. The parser is able to recognize set expressions written in both asciimath or LaTeX and convert them into SymPy expressions. The parser can be found in the [`evaluation-function-toolkit-python`](https://github.com/lambda-feedback/toolkit-python) package.
+
 ### Docker & Amazon Web Services (AWS)
 
 The grading scripts are hosted AWS Lambda, using containers to run a docker image of the app. Docker is a popular tool in software development that allows programs to be hosted on any machine by bundling all its requirements and dependencies into a single file called an **image**.
