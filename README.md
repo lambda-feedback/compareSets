@@ -2,7 +2,7 @@
 
 This repository contains the code for an evaluation function that compares two set expressions and returns feedback based on the outcome of the comparison. The function is designed to be used in the Lambda Feedback system, which is a platform for providing automated feedback on student submissions.
 
-This evaluation function is written Python and uses [SymPy](https://www.sympy.org/en/index.html) in order to evaluate the set expressions. As SymPy does not support parsing set expressions, the function uses a custom parser based on [Lark](https://lark-parser.readthedocs.io/en/latest/). The parser is able to recognize set expressions written in both [asciimath](https://asciimath.org/) or [LaTeX](https://www.latex-project.org/) and convert them into SymPy expressions.
+This evaluation function is written in Python and uses [SymPy](https://www.sympy.org/en/index.html) in order to evaluate the set expressions. As SymPy does not support parsing set expressions, the function uses a custom parser based on [Lark](https://lark-parser.readthedocs.io/en/latest/). The parser is able to recognize set expressions written in both [asciimath](https://asciimath.org/) or [LaTeX](https://www.latex-project.org/) and convert them into SymPy expressions.
 
 ## Repository Structure
 
