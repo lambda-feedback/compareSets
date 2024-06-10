@@ -1,4 +1,4 @@
-# Base image that bundles AWS Lambda Python 3.8 image with some middleware functions
+# Base image that bundles AWS Lambda Python 3.9 image with some middleware functions
 
 # TODO: change the base image tag to the latest version
 FROM ghcr.io/lambda-feedback/baseevalutionfunctionlayer:pr-10-3.9

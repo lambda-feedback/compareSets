@@ -1,4 +1,5 @@
 from typing import Any
+from sympy import simplify, EmptySet
 from lf_toolkit.evaluation import Result, Params
 from lf_toolkit.parse.set import SetParser, LatexPrinter, SymPyTransformer, ASCIIPrinter
 
@@ -52,7 +53,8 @@ def evaluation_function(response: Any, answer: Any, params: Params, include_test
         # 4. compare the two sympy expressions w/ simplifaction disabled. If they are equal, the expressions are also equal.
         # 5a. TODO: If `params.enforce_expression_equality` is True, `is_correct` is True iff both 3) and 4) are True.
         # 5b. If `params.enforce_expression_equality` is False, `is_correct` is True iff 3) is True.
-        is_correct = responseSetSympy == answerSetSympy
+        difference = simplify(answerSetSympy - responseSetSympy)
+        is_correct = difference == EmptySet
 
         latexPrinter = LatexPrinter()
         latex = latexPrinter.print(responseSet)
