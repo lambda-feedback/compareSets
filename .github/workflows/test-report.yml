@@ -19,7 +19,7 @@ jobs:
         uses: dorny/test-reporter@v1
         if: always()
         with:
-          name: Pytest
+          name: Pytest Report
           artifact: test-results
           path: '*.xml'
           reporter: java-junit
