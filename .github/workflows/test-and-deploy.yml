@@ -1,4 +1,4 @@
-name: Test & Deploy Evaluation Function to AWS Lambda
+name: Test and Deploy
 
 on:
   push:
@@ -12,6 +12,12 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      actions: read
+      checks: write
+      pull-requests: write
 
     strategy:
       fail-fast: false
@@ -57,14 +63,13 @@ jobs:
         run: |
           pytest --junit-xml=./reports/pytest-preview.xml --tb=auto -v preview_tests.py::TestPreviewFunction
 
-      - name: Test Report
-        uses: dorny/test-reporter@v1
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Pytest
-          path: ./app/reports/pytest-*.xml
-          reporter: java-junit
-          fail-on-error: false
+          name: test-results
+          path: ./reports/
+
 
   deploy-staging:
     name: Deploy Staging
