@@ -49,11 +49,19 @@ jobs:
 
       - name: Test Evaluation Function
         run: |
-          pytest -v evaluation_tests.py::TestEvaluationFunction
+          pytest --junit-xml=./reports/pytest-evaluation.xml --tb -v evaluation_tests.py::TestEvaluationFunction
 
       - name: Test Preview Function
         run: |
-          pytest -v preview_tests.py::TestPreviewFunction
+          pytest --junit-xml=./reports/pytest-preview.xml --tb -v preview_tests.py::TestPreviewFunction
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Pytest
+          path: reports/pytest-*.xml
+          reporter: java-junit
 
   deploy-staging:
     name: Deploy Staging
