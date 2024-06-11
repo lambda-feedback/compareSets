@@ -1,4 +1,4 @@
-name: Test and Deploy
+name: 'Test and Deploy'
 
 on:
   push:
@@ -69,7 +69,6 @@ jobs:
         with:
           name: test-results
           path: ./reports/
-
 
   deploy-staging:
     name: Deploy Staging
