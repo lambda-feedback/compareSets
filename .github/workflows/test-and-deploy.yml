@@ -1,4 +1,4 @@
-name: Test and Deploy
+name: 'Test and Deploy'
 
 on:
   push:
@@ -68,8 +68,8 @@ jobs:
         if: always()
         with:
           name: test-results
-          path: ./reports/
-
+          path: ./app/reports/pytest-*.xml
+          if-no-files-found: warn
 
   deploy-staging:
     name: Deploy Staging
