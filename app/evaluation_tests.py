@@ -71,7 +71,7 @@ class TestEvaluationFunction(unittest.TestCase):
         result = evaluation_function(response, answer, params)
 
         self.assertEqual(result.get("is_correct"), True)
-        self.assertEqual(result.get("response_latex"), "\\overline{\left(A \\cap B\\right)}")
+        self.assertEqual(result.get("response_latex"), "\\overline{\\left(A \\cap B\\right)}")
 
     def test_intersection_of_complement(self):
         response, answer, params = "B' n B", "A n A'", Params()
