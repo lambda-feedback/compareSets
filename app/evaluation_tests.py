@@ -57,7 +57,7 @@ class TestEvaluationFunction(unittest.TestCase):
         self.assertEqual(result.get("is_correct"), True)
         self.assertEqual(result.get("response_latex"), "\\overline{B} \\cup B")
 
-    def test_de_Morgan(self):
+    def test_de_morgan(self):
         """
         Testing de Morgan's well known laws
         """
@@ -104,6 +104,22 @@ class TestEvaluationFunction(unittest.TestCase):
 
         self.assertEqual(result.get("is_correct"), False)
         self.assertEqual(result.get("response_latex"), None)
+
+    def test_syntactic_returns_is_correct_true_commutativity(self):
+        response, answer, params = "A u B", "B u A", Params(enforce_expression_equality=True)
+
+        result = evaluation_function(response, answer, params)
+
+        self.assertEqual(result.get("is_correct"), True)
+        self.assertEqual(result.get("response_latex"), "A \\cup B")
+
+    def test_syntactic_returns_is_correct_false_de_morgan(self):
+        response, answer, params = "(A u B)'", "A' n B'", Params(enforce_expression_equality=True)
+
+        result = evaluation_function(response, answer, params)
+
+        self.assertEqual(result.get("is_correct"), False)
+        self.assertEqual(result.get("response_latex"), "\\overline{\\left(A \\cup B\\right)}")
 
 if __name__ == "__main__":
     unittest.main()
