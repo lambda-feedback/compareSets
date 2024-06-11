@@ -48,12 +48,14 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
       - name: Test Evaluation Function
+        if: always()
         run: |
-          pytest --junit-xml=./reports/pytest-evaluation.xml --tb -v evaluation_tests.py::TestEvaluationFunction
+          pytest --junit-xml=./reports/pytest-evaluation.xml --tb=auto -v evaluation_tests.py::TestEvaluationFunction
 
       - name: Test Preview Function
+        if: always()
         run: |
-          pytest --junit-xml=./reports/pytest-preview.xml --tb -v preview_tests.py::TestPreviewFunction
+          pytest --junit-xml=./reports/pytest-preview.xml --tb=auto -v preview_tests.py::TestPreviewFunction
 
       - name: Test Report
         uses: dorny/test-reporter@v1
