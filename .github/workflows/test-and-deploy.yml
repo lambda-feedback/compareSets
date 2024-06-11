@@ -68,7 +68,7 @@ jobs:
         if: always()
         with:
           name: test-results
-          path: reports/pytest-*.xml
+          path: ./app/reports/pytest-*.xml
           if-no-files-found: warn
 
   deploy-staging:
