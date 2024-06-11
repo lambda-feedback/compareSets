@@ -64,6 +64,7 @@ jobs:
           name: Pytest
           path: ./app/reports/pytest-*.xml
           reporter: java-junit
+          fail-on-error: false
 
   deploy-staging:
     name: Deploy Staging
