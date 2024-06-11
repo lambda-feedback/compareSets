@@ -32,6 +32,7 @@ class TestEvaluationFunction(unittest.TestCase):
 
         self.assertEqual(result.get("is_correct"), True)
         self.assertEqual(result.get("response_latex"), "A \\cap B")
+        self.assertFalse(result.get("feedback"))
 
     def test_intersection_is_commutative(self):
         """
@@ -44,6 +45,7 @@ class TestEvaluationFunction(unittest.TestCase):
 
         self.assertEqual(result.get("is_correct"), True)
         self.assertEqual(result.get("response_latex"), "A \\cap B")
+        self.assertFalse(result.get("feedback"))
 
     def test_union_of_complement(self):
         """
@@ -56,6 +58,7 @@ class TestEvaluationFunction(unittest.TestCase):
 
         self.assertEqual(result.get("is_correct"), True)
         self.assertEqual(result.get("response_latex"), "\\overline{B} \\cup B")
+        self.assertFalse(result.get("feedback"))
 
     def test_de_morgan(self):
         """
@@ -72,6 +75,7 @@ class TestEvaluationFunction(unittest.TestCase):
 
         self.assertEqual(result.get("is_correct"), True)
         self.assertEqual(result.get("response_latex"), "\\overline{\\left(A \\cap B\\right)}")
+        self.assertFalse(result.get("feedback"))
 
     def test_intersection_of_complement(self):
         response, answer, params = "B' n B", "A n A'", Params()
@@ -80,6 +84,7 @@ class TestEvaluationFunction(unittest.TestCase):
 
         self.assertEqual(result.get("is_correct"), True)
         self.assertEqual(result.get("response_latex"), "\\overline{B} \\cap B")
+        self.assertFalse(result.get("feedback"))
 
     def test_returns_is_correct_true_latex(self):
         response, answer, params = "A \\cap B", "A n B", Params(is_latex=True)
@@ -88,6 +93,7 @@ class TestEvaluationFunction(unittest.TestCase):
 
         self.assertEqual(result.get("is_correct"), True)
         self.assertEqual(result.get("response_latex"), "A \\cap B")
+        self.assertFalse(result.get("feedback"))
 
     def test_returns_is_correct_false(self):
         response, answer, params = "A n B", "A u B", Params()
@@ -96,6 +102,7 @@ class TestEvaluationFunction(unittest.TestCase):
 
         self.assertEqual(result.get("is_correct"), False)
         self.assertEqual(result.get("response_latex"), "A \\cap B")
+        self.assertTrue(result.get("feedback"))
 
     def test_returns_is_correct_false_not_parseable(self):
         response, answer, params = "", "A u B", Params()
@@ -104,6 +111,7 @@ class TestEvaluationFunction(unittest.TestCase):
 
         self.assertEqual(result.get("is_correct"), False)
         self.assertEqual(result.get("response_latex"), None)
+        self.assertTrue(result.get("feedback"))
 
     def test_syntactic_returns_is_correct_true_commutativity(self):
         response, answer, params = "A u B", "B u A", Params(enforce_expression_equality=True)
@@ -112,6 +120,7 @@ class TestEvaluationFunction(unittest.TestCase):
 
         self.assertEqual(result.get("is_correct"), True)
         self.assertEqual(result.get("response_latex"), "A \\cup B")
+        self.assertFalse(result.get("feedback"))
 
     def test_syntactic_returns_is_correct_false_de_morgan(self):
         response, answer, params = "(A u B)'", "A' n B'", Params(enforce_expression_equality=True)
@@ -120,6 +129,7 @@ class TestEvaluationFunction(unittest.TestCase):
 
         self.assertEqual(result.get("is_correct"), False)
         self.assertEqual(result.get("response_latex"), "\\overline{\\left(A \\cup B\\right)}")
+        self.assertTrue(result.get("feedback"))
 
 if __name__ == "__main__":
     unittest.main()

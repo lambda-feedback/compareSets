@@ -71,9 +71,9 @@ def evaluation_function(
 
         feedback_items=[]
 
-        if semantic_equal and not syntactic_equal:
+        if semantic_equal and not syntactic_equal and enforce_expression_equality:
             feedback_items.append(("syntactic_equality", "The expressions are not equal syntacitcally."))
-        if not semantic_equal:
+        elif not semantic_equal:
             feedback_items.append(("semantic_equality", "The expressions are not equal."))
 
         latexPrinter = LatexPrinter()
@@ -86,6 +86,7 @@ def evaluation_function(
             is_correct=is_correct,
             latex=latex,
             simplified=ascii,
+            feedback_items=feedback_items,
         ).to_dict(include_test_data=include_test_data)
     except FeedbackException as e:
         return Result(
