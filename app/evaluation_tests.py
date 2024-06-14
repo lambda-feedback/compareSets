@@ -34,10 +34,6 @@ class TestEvaluationFunction(unittest.TestCase):
         self.assertEqual(result.get("response_latex"), "A \\cap B")
 
     def test_intersection_is_commutative(self):
-        """
-        Since A n A' is equal to the empty set (by definition of complement)
-        for any set A, then B' u B should be considered equal to A n A'
-        """
         response, answer, params = "A n B", "B n A", Params()
 
         result = evaluation_function(response, answer, params)
@@ -47,7 +43,7 @@ class TestEvaluationFunction(unittest.TestCase):
 
     def test_union_of_complement(self):
         """
-        Since A u A' is equal to the Universal set (by definition of complement)
+        Since A u A' is equal to the universal set (by definition of complement)
         for any set A, then B' u B should be considered equal to A u A'
         """
         response, answer, params = "B' u B", "A u A'", Params()
@@ -74,6 +70,10 @@ class TestEvaluationFunction(unittest.TestCase):
         self.assertEqual(result.get("response_latex"), "\overline{\left(A \\cap B\\right)}")
 
     def test_intersection_of_complement(self):
+        """
+        Since A n A' is equal to the empty set (by definition of complement)
+        for any set A, then B' n B should be considered equal to A n A'
+        """
         response, answer, params = "B' n B", "A n A'", Params()
 
         result = evaluation_function(response, answer, params)
