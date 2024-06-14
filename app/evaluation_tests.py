@@ -35,10 +35,6 @@ class TestEvaluationFunction(unittest.TestCase):
         self.assertFalse(result.get("feedback"))
 
     def test_intersection_is_commutative(self):
-        """
-        Since A n A' is equal to the empty set (by definition of complement)
-        for any set A, then B' u B should be considered equal to A n A'
-        """
         response, answer, params = "A n B", "B n A", Params()
 
         result = evaluation_function(response, answer, params)
@@ -78,6 +74,10 @@ class TestEvaluationFunction(unittest.TestCase):
         self.assertFalse(result.get("feedback"))
 
     def test_intersection_of_complement(self):
+        """
+        Since A n A' is equal to the empty set (by definition of complement)
+        for any set A, then B' n B should be considered equal to A n A'
+        """
         response, answer, params = "B' n B", "A n A'", Params()
 
         result = evaluation_function(response, answer, params)
