@@ -1,7 +1,7 @@
 from typing import Any
-from sympy import simplify, EmptySet
+from sympy import simplify_logic, Equivalent
 from lf_toolkit.evaluation import Result, Params
-from lf_toolkit.parse.set import SetParser, LatexPrinter, SymPyTransformer, ASCIIPrinter
+from lf_toolkit.parse.set import SetParser, LatexPrinter, SymPyBooleanTransformer, ASCIIPrinter
 
 # TODO: this is hacky, we need another way to bundle up everything.
 try:
@@ -9,7 +9,12 @@ try:
 except:
     from parse import parse_with_feedback, FeedbackException
 
-def evaluation_function(response: Any, answer: Any, params: Params, include_test_data: bool = False) -> dict:
+def evaluation_function(
+    response: Any,
+    answer: Any,
+    params: Params,
+    include_test_data: bool = False,
+) -> dict:
     """
     Function used to evaluate a student response.
     ---
@@ -34,7 +39,7 @@ def evaluation_function(response: Any, answer: Any, params: Params, include_test
     """
 
     parser = SetParser.instance()
-    sympyTransformer = SymPyTransformer()
+    sympyTransformer = SymPyBooleanTransformer()
 
     # here we want to compare the response set with the example solution set.
     # we have to do the following steps
@@ -49,12 +54,27 @@ def evaluation_function(response: Any, answer: Any, params: Params, include_test
         answerSet = parser.parse(answer, latex=False)
         answerSetSympy = sympyTransformer.transform(answerSet)
 
-        # 3. TODO: compare the two sympy expressions w/ simplification enabled. If they are equal, the sets produced by the two expressions are equal. However, the expressions may not be equal.
-        # 4. compare the two sympy expressions w/ simplifaction disabled. If they are equal, the expressions are also equal.
-        # 5a. TODO: If `params.enforce_expression_equality` is True, `is_correct` is True iff both 3) and 4) are True.
-        # 5b. If `params.enforce_expression_equality` is False, `is_correct` is True iff 3) is True.
-        difference = simplify(answerSetSympy - responseSetSympy)
-        is_correct = difference == EmptySet
+        # 3. compare the two sympy expressions w/ simplification enabled.
+        #    If they are equal, the sets produced by the two expressions are
+        #    semantically equal. However, the expressions may not be equal.
+        semantic_equal = simplify_logic(Equivalent(responseSetSympy, answerSetSympy)) == True
+
+        # 4. compare the two sympy expressions w/ simplifaction disabled.
+        #    If they are equal, the expressions are also equal in syntax.
+        #    This respects laws of commutativity, e.g. A u B == B u A.
+        syntactic_equal = responseSetSympy == answerSetSympy
+
+        enforce_expression_equality = params.get("enforce_expression_equality", False)
+
+        # 5. `is_correct` is True, iff 3) is True, and either 4) or `enforce_expression_equality` is True
+        is_correct = semantic_equal and (syntactic_equal or not enforce_expression_equality)
+
+        feedback_items=[]
+
+        if semantic_equal and not syntactic_equal and enforce_expression_equality:
+            feedback_items.append(("syntactic_equality", "The expressions are not equal syntacitcally."))
+        elif not semantic_equal:
+            feedback_items.append(("semantic_equality", "The expressions are not equal."))
 
         latexPrinter = LatexPrinter()
         latex = latexPrinter.print(responseSet)
@@ -66,6 +86,7 @@ def evaluation_function(response: Any, answer: Any, params: Params, include_test
             is_correct=is_correct,
             latex=latex,
             simplified=ascii,
+            feedback_items=feedback_items,
         ).to_dict(include_test_data=include_test_data)
     except FeedbackException as e:
         return Result(
