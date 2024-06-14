@@ -51,7 +51,7 @@ class TestEvaluationFunction(unittest.TestCase):
         result = evaluation_function(response, answer, params)
 
         self.assertEqual(result.get("is_correct"), True)
-        self.assertEqual(result.get("response_latex"), "\overline{B} \\cup B")
+        self.assertEqual(result.get("response_latex"), "\\overline{B} \\cup B")
 
     def test_de_Morgan(self):
         """
@@ -61,13 +61,13 @@ class TestEvaluationFunction(unittest.TestCase):
         result = evaluation_function(response, answer, params)
 
         self.assertEqual(result.get("is_correct"), True)
-        self.assertEqual(result.get("response_latex"), "\overline{\\left(A \\cup B\\right)}")
+        self.assertEqual(result.get("response_latex"), "\\overline{\\left(A \\cup B\\right)}")
 
         response, answer, params = "(A n B)'", "A' u B'", Params()
         result = evaluation_function(response, answer, params)
 
         self.assertEqual(result.get("is_correct"), True)
-        self.assertEqual(result.get("response_latex"), "\overline{\left(A \\cap B\\right)}")
+        self.assertEqual(result.get("response_latex"), "\\overline{\left(A \\cap B\\right)}")
 
     def test_intersection_of_complement(self):
         """
@@ -79,7 +79,7 @@ class TestEvaluationFunction(unittest.TestCase):
         result = evaluation_function(response, answer, params)
 
         self.assertEqual(result.get("is_correct"), True)
-        self.assertEqual(result.get("response_latex"), "\overline{B} \\cap B")
+        self.assertEqual(result.get("response_latex"), "\\overline{B} \\cap B")
 
     def test_returns_is_correct_true_latex(self):
         response, answer, params = "A \\cap B", "A n B", Params(is_latex=True)
