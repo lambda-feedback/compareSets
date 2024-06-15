@@ -59,6 +59,7 @@ jobs:
           if-no-files-found: warn
 
   build:
+    name: Build Docker Image
     uses: lambda-feedback/evaluation-function-workflows/.github/workflows/build.yml@main
     needs: test
     permissions:
@@ -67,6 +68,7 @@ jobs:
       packages: write
         
   deploy:
+    name: Deploy to Lambda Feedback
     uses: lambda-feedback/evaluation-function-workflows/.github/workflows/deploy.yml@main
     needs: test
     with:
