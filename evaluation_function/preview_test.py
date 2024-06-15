@@ -59,7 +59,3 @@ class TestPreviewFunction(unittest.TestCase):
         self.assertIsNotNone(result["preview"]["feedback"])
         self.assertRaises(KeyError, lambda: result["preview"]["sympy"])
         self.assertRaises(KeyError, lambda: result["preview"]["latex"])
-
-
-if __name__ == "__main__":
-    unittest.main()

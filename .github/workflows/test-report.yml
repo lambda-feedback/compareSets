@@ -1,8 +1,8 @@
-name: 'Test Report'
+name: Test Report
 
 on:
   workflow_run:
-    workflows: ['Test and Deploy']
+    workflows: ["Build, Test and Deploy"]
     types:
       - completed
 
