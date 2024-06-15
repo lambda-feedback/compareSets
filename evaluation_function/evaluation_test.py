@@ -130,6 +130,3 @@ class TestEvaluationFunction(unittest.TestCase):
         self.assertEqual(result.get("is_correct"), False)
         self.assertEqual(result.get("response_latex"), "\\overline{\\left(A \\cup B\\right)}")
         self.assertTrue(result.get("feedback"))
-
-if __name__ == "__main__":
-    unittest.main()
