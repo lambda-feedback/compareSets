@@ -88,5 +88,3 @@ def evaluation_function(
             is_correct=False,
             feedback_items=[("parse_error", str(e))]
         )
-    
-# {"jsonrpc": "2.0", "method": "eval", "params": [{"response": "A u B", "answer": "B u A"}], "id": "1"}
