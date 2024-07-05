@@ -2,13 +2,13 @@
 
 [[package]]
 name = "antlr4-python3-runtime"
-version = "4.13.0"
-description = "ANTLR 4.13.0 runtime for Python 3"
+version = "4.13.1"
+description = "ANTLR 4.13.1 runtime for Python 3"
 optional = false
 python-versions = "*"
 files = [
-    {file = "antlr4-python3-runtime-4.13.0.tar.gz", hash = "sha256:0d5454928ae40c8a6b653caa35046cd8492c8743b5fbc22ff4009099d074c7ae"},
-    {file = "antlr4_python3_runtime-4.13.0-py3-none-any.whl", hash = "sha256:53e6e208cf4a1ad53fb8b1b4467b756375a4f827331e290618aedcf481cb1d5c"},
+    {file = "antlr4-python3-runtime-4.13.1.tar.gz", hash = "sha256:3cd282f5ea7cfb841537fe01f143350fdb1c0b1ce7981443a2fa8513fddb6d1a"},
+    {file = "antlr4_python3_runtime-4.13.1-py3-none-any.whl", hash = "sha256:78ec57aad12c97ac039ca27403ad61cb98aaec8a3f9bb8144f889aa0fa28b943"},
 ]
 
 [[package]]
@@ -212,7 +212,7 @@ files = []
 develop = false
 
 [package.dependencies]
-antlr4-python3-runtime = {version = "4.13", optional = true}
+antlr4-python3-runtime = {version = "4.13.1", optional = true}
 anyio = "4.4.0"
 jsonrpcserver = "5.0.9"
 lark = {version = "1.1.9", optional = true}
@@ -224,13 +224,13 @@ ujson = "5.10.0"
 [package.extras]
 http = ["fastapi (>=0.111.0,<0.112.0)"]
 ipc = ["pywin32 (>=306,<307)"]
-parsing = ["antlr4-python3-runtime (==4.13)", "lark (==1.1.9)", "latex2sympy @ git+https://github.com/purdue-tlt/latex2sympy.git@1.11.2"]
+parsing = ["antlr4-python3-runtime (==4.13.1)", "lark (==1.1.9)", "latex2sympy @ git+https://github.com/purdue-tlt/latex2sympy.git@1.11.2"]
 
 [package.source]
 type = "git"
 url = "https://github.com/lambda-feedback/toolkit-python.git"
 reference = "main"
-resolved_reference = "0afe7c34073c21de51e5b03074a04ea2745219f8"
+resolved_reference = "19704127e57f68fcad22cd9757c8239ca7d88ca2"
 
 [[package]]
 name = "mccabe"
