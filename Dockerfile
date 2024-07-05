@@ -1,5 +1,3 @@
-FROM ghcr.io/lambda-feedback/shimmy:pr-5 as shimmy
-
 FROM ghcr.io/lambda-feedback/evaluation-function-base/python:3.12 as builder
 
 RUN pip install poetry==1.8.3
@@ -37,6 +35,3 @@ ENV FUNCTION_ARGS="-m,evaluation_function.main"
 ENV FUNCTION_RPC_TRANSPORT="ipc"
 
 ENV LOG_LEVEL="debug"
-
-# TODO: remove this once shimmy#5 is merged
-COPY --from=shimmy /shimmy /usr/local/bin/shimmy
