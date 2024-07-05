@@ -77,7 +77,7 @@ jobs:
         if: always()
         with:
           name: test-results
-          path: ./evaluation_function/reports/pytest.xml
+          path: ./reports/pytest.xml
           if-no-files-found: warn
 
   build:
