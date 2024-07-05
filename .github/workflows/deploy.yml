@@ -67,7 +67,6 @@ jobs:
       #     flake8 ./evaluation_function --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
       - name: Run tests
-        working-directory: evaluation_function
         if: always()
         run: |
           source $VENV
