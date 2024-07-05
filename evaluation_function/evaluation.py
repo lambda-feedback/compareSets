@@ -3,17 +3,12 @@ from sympy import simplify_logic, Equivalent
 from lf_toolkit.evaluation import Result, Params
 from lf_toolkit.parse.set import SetParser, LatexPrinter, SymPyBooleanTransformer, ASCIIPrinter
 
-# TODO: this is hacky, we need another way to bundle up everything.
-try:
-    from .parse import parse_with_feedback, FeedbackException
-except:
-    from parse import parse_with_feedback, FeedbackException
+from .parse import parse_with_feedback, FeedbackException
 
 def evaluation_function(
     response: Any,
     answer: Any,
     params: Params,
-    include_test_data: bool = False,
 ) -> dict:
     """
     Function used to evaluate a student response.
@@ -87,14 +82,11 @@ def evaluation_function(
             latex=latex,
             simplified=ascii,
             feedback_items=feedback_items,
-        ).to_dict(include_test_data=include_test_data)
+        )
     except FeedbackException as e:
         return Result(
             is_correct=False,
             feedback_items=[("parse_error", str(e))]
-        ).to_dict(include_test_data)
-    except Exception as e:
-        return Result(
-            is_correct=False,
-            feedback_items=[("error", str(e))]
-        ).to_dict(include_test_data)
+        )
+    
+# {"jsonrpc": "2.0", "method": "eval", "params": [{"response": "A u B", "answer": "B u A"}], "id": "1"}
