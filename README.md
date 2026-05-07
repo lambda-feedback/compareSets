@@ -4,6 +4,9 @@ This repository contains the code for an evaluation function that compares two s
 
 This evaluation function is written in Python and uses [SymPy](https://www.sympy.org/en/index.html) in order to evaluate the set expressions. As SymPy does not support parsing set expressions, the function uses a custom parser based on [Lark](https://lark-parser.readthedocs.io/en/latest/). The parser is able to recognize set expressions written in both [asciimath](https://asciimath.org/) or [LaTeX](https://www.latex-project.org/) and convert them into SymPy expressions.
 
+## Deployment
+[![Create Release Request](https://img.shields.io/badge/Create%20Release%20Request-blue?style=for-the-badge)](https://github.com/lambda-feedback/compareSets/issues/new?template=release-request.yml)
+
 ## Repository Structure
 
 ```bash
