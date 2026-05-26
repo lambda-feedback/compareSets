@@ -46,7 +46,10 @@ def evaluation_function(
 
         # 2. convert the `answer`, which may be a latex string, to a sympy expression
         # TODO: what if answer is also in latex? how do we know?
-        answerSet = parser.parse(answer, latex=False)
+        try:
+            answerSet = parser.parse(answer, latex=False)
+        except Exception as e:
+            raise FeedbackException() from e
         answerSetSympy = sympyTransformer.transform(answerSet)
 
         # 3. compare the two sympy expressions w/ simplification enabled.

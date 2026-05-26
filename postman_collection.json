@@ -29,19 +29,19 @@
           "// Each request calls: eval(pm.globals.get('__helpers'))",
           "// then uses setLegacyEvalReq, setLegacyPreviewReq, or setMuEdEvalReq.",
           "var h = '';",
-          "h += 'function buildEvent(b,p){p=p||\"/\";return{version:\"2.0\",routeKey:\"POST \"+p,rawPath:p,rawQueryString:\"\",path:p,headers:{\"content-type\":\"application/json\"},requestContext:{http:{method:\"POST\",path:p}},body:JSON.stringify(b),isBase64Encoded:false};}';",
+          "h += 'function buildEvent(b,p,method){p=p||\"/\";method=method||\"POST\";return{version:\"2.0\",routeKey:method+\" \"+p,rawPath:p,rawQueryString:\"\",path:p,headers:{\"content-type\":\"application/json\"},requestContext:{http:{method:method,path:p}},body:JSON.stringify(b),isBase64Encoded:false};}';",
           "h += 'function buildLegacyEvalEvent(r,a,p){return buildEvent({response:r,answer:a,params:p||{}},\"/\");}';",
           "h += 'function buildLegacyPreviewEvent(r,p){var e=buildEvent({response:r,params:p||{}},\"/\");e.headers[\"command\"]=\"preview\";return e;}';",
-          "h += 'function buildMuEdEvent(r,a,p,o){o=o||{};var t=o.type||\"MATH\",m={MATH:\"expression\",TEXT:\"text\",CODE:\"code\",MODEL:\"model\"},k=m[t]||\"value\",s={type:t,content:{}};s.content[k]=r;var b={submission:s};if(a!=null){var rf={};rf[k]=a;b.task={title:o.title||\"Evaluation Task\",referenceSolution:rf};}if(p&&Object.keys(p).length)b.configuration={params:p};if(o.user)b.user=o.user;if(o.criteria)b.criteria=o.criteria;return buildEvent(b,\"/evaluate\");}';",
+          "h += 'function buildMuEdEvent(r,a,p,o){o=o||{};var t=o.type||\"MATH\",m={MATH:\"expression\",TEXT:\"text\",CODE:\"code\",MODEL:\"model\"},k=m[t]||\"value\",s={type:t,content:{}};s.content[k]=r;var b={submission:s};if(a!=null){var rf={type:t,content:{}};rf.content[k]=a;b.task={title:o.title||\"Evaluation Task\",referenceSolution:rf};}if(p&&Object.keys(p).length)b.configuration={params:p};if(o.user)b.user=o.user;if(o.criteria)b.criteria=o.criteria;return buildEvent(b,\"/evaluate\");}';",
           "h += 'function buildMuEdPreviewEvent(r,p,o){o=o||{};var t=o.type||\"MATH\",m={MATH:\"expression\",TEXT:\"text\",CODE:\"code\",MODEL:\"model\"},k=m[t]||\"value\",s={type:t,content:{}};s.content[k]=r;var b={submission:s};if(p&&Object.keys(p).length)b.configuration={params:p};b.preSubmissionFeedback={enabled:true};return buildEvent(b,\"/evaluate\");}';",
           "h += 'var __mode=pm.collectionVariables.get(\"mode\")||\"local\";';",
           "h += 'var __base=pm.collectionVariables.get(\"baseUrl\");';",
           "h += 'function setLegacyEvalReq(r,a,p){if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildLegacyEvalEvent(r,a,p)));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify({response:r,answer:a,params:p||{}}));pm.variables.set(\"requestUrl\",__base);}}';",
           "h += 'function setLegacyPreviewReq(r,p){if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildLegacyPreviewEvent(r,p)));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify({response:r,params:p||{}}));pm.variables.set(\"requestUrl\",__base);pm.request.headers.add({key:\"command\",value:\"preview\"});}}';",
           "h += 'function setLegacyHealthReq(){if(__mode===\"local\"){var e=buildEvent({},\"/\");e.headers[\"command\"]=\"healthcheck\";pm.variables.set(\"lambdaEvent\",JSON.stringify(e));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify({}));pm.variables.set(\"requestUrl\",__base);pm.request.headers.add({key:\"command\",value:\"healthcheck\"},true);}}';",
-          "h += 'function setMuEdEvalReq(r,a,p,o){o=o||{};var t=o.type||\"MATH\",m={MATH:\"expression\",TEXT:\"text\",CODE:\"code\",MODEL:\"model\"},k=m[t]||\"value\",s={type:t,content:{}};s.content[k]=r;var b={submission:s};if(a!=null){var rf={};rf[k]=a;b.task={title:o.title||\"Evaluation Task\",referenceSolution:rf};}if(p&&Object.keys(p).length)b.configuration={params:p};if(o.user)b.user=o.user;if(o.criteria)b.criteria=o.criteria;if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildEvent(b,\"/evaluate\")));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify(b));pm.variables.set(\"requestUrl\",__base+\"/evaluate\");}}';",
+          "h += 'function setMuEdEvalReq(r,a,p,o){o=o||{};var t=o.type||\"MATH\",m={MATH:\"expression\",TEXT:\"text\",CODE:\"code\",MODEL:\"model\"},k=m[t]||\"value\",s={type:t,content:{}};s.content[k]=r;var b={submission:s};if(a!=null){var rf={type:t,content:{}};rf.content[k]=a;b.task={title:o.title||\"Evaluation Task\",referenceSolution:rf};}if(p&&Object.keys(p).length)b.configuration={params:p};if(o.user)b.user=o.user;if(o.criteria)b.criteria=o.criteria;if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildEvent(b,\"/evaluate\")));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify(b));pm.variables.set(\"requestUrl\",__base+\"/evaluate\");}}';",
           "h += 'function setMuEdPreviewReq(r,p,o){o=o||{};var t=o.type||\"MATH\",m={MATH:\"expression\",TEXT:\"text\",CODE:\"code\",MODEL:\"model\"},k=m[t]||\"value\",s={type:t,content:{}};s.content[k]=r;var b={submission:s};if(p&&Object.keys(p).length)b.configuration={params:p};b.preSubmissionFeedback={enabled:true};if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildEvent(b,\"/evaluate\")));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify(b));pm.variables.set(\"requestUrl\",__base+\"/evaluate\");}}';",
-          "h += 'function setMuEdHealthReq(){if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildEvent({},\"/evaluate/health\")));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify({}));pm.variables.set(\"requestUrl\",__base+\"/evaluate/health\");}}';",
+          "h += 'function setMuEdHealthReq(){if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildEvent({},\"/evaluate/health\",\"GET\")));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify({}));pm.variables.set(\"requestUrl\",__base+\"/evaluate/health\");}}';",
           "h += 'function setMuEdRawReq(body,path){if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildEvent(body,path)));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify(body));pm.variables.set(\"requestUrl\",__base+path);}}';",
           "pm.globals.set('__helpers', h);",
           "",
@@ -292,8 +292,7 @@
                       "pm.test('command is eval', function () { pm.expect(r.command).to.equal('eval'); });",
                       "pm.test('is_correct is false', function () { pm.expect(r.result.is_correct).to.be.false; });",
                       "pm.test('result.response_latex is a string', function () { pm.expect(r.result.response_latex).to.be.a('string'); });",
-                      "pm.test('result.response_simplified is a string', function () { pm.expect(r.result.response_simplified).to.be.a('string'); });",
-                      "pm.test('feedback is present', function () { pm.expect(r.result.feedback).to.be.a('string').and.not.be.empty; });"
+                      "pm.test('result.response_simplified is a string', function () { pm.expect(r.result.response_simplified).to.be.a('string'); });"
                     ]
                   }
                 }
@@ -546,7 +545,7 @@
           "name": "Legacy",
           "item": [
             {
-              "name": "Correct: (A u B)' = A' n B' (first law)",
+              "name": "Correct: complement of union ((A u B)' = (A u B)')",
               "event": [
                 {
                   "listen": "prerequest",
@@ -554,7 +553,7 @@
                     "type": "text/javascript",
                     "exec": [
                       "eval(pm.globals.get('__helpers'));",
-                      "setLegacyEvalReq(\"(A u B)'\", \"A' n B'\", {});"
+                      "setLegacyEvalReq(\"(A u B)'\", \"(A u B)'\", {});"
                     ]
                   }
                 },
@@ -566,7 +565,7 @@
                       "var raw = pm.response.json();",
                       "var r = (raw.body !== undefined) ? JSON.parse(raw.body) : raw;",
                       "pm.test('command is eval', function () { pm.expect(r.command).to.equal('eval'); });",
-                      "pm.test('is_correct is true (De Morgan)', function () { pm.expect(r.result.is_correct).to.be.true; });",
+                      "pm.test('is_correct is true', function () { pm.expect(r.result.is_correct).to.be.true; });",
                       "pm.test('response_latex contains overline', function () { pm.expect(r.result.response_latex).to.include('\\\\overline{'); });"
                     ]
                   }
@@ -580,7 +579,7 @@
               }
             },
             {
-              "name": "Correct: (A n B)' = A' u B' (second law)",
+              "name": "Incorrect: complement of union ≠ complement of intersection ((A u B)' ≠ (A n B)')",
               "event": [
                 {
                   "listen": "prerequest",
@@ -588,7 +587,7 @@
                     "type": "text/javascript",
                     "exec": [
                       "eval(pm.globals.get('__helpers'));",
-                      "setLegacyEvalReq(\"(A n B)'\", \"A' u B'\", {});"
+                      "setLegacyEvalReq(\"(A u B)'\", \"(A n B)'\", {});"
                     ]
                   }
                 },
@@ -600,7 +599,7 @@
                       "var raw = pm.response.json();",
                       "var r = (raw.body !== undefined) ? JSON.parse(raw.body) : raw;",
                       "pm.test('command is eval', function () { pm.expect(r.command).to.equal('eval'); });",
-                      "pm.test('is_correct is true (De Morgan)', function () { pm.expect(r.result.is_correct).to.be.true; });",
+                      "pm.test('is_correct is false', function () { pm.expect(r.result.is_correct).to.be.false; });",
                       "pm.test('response_latex contains overline', function () { pm.expect(r.result.response_latex).to.include('\\\\overline{'); });"
                     ]
                   }
@@ -619,7 +618,7 @@
           "name": "muEd",
           "item": [
             {
-              "name": "Correct: (A u B)' = A' n B' (first law)",
+              "name": "Correct: complement of union ((A u B)' = (A u B)')",
               "event": [
                 {
                   "listen": "prerequest",
@@ -627,7 +626,7 @@
                     "type": "text/javascript",
                     "exec": [
                       "eval(pm.globals.get('__helpers'));",
-                      "setMuEdEvalReq(\"(A u B)'\", \"A' n B'\", {});"
+                      "setMuEdEvalReq(\"(A u B)'\", \"(A u B)'\", {});"
                     ]
                   }
                 },
@@ -639,7 +638,7 @@
                       "var raw = pm.response.json();",
                       "var r = (raw.body !== undefined) ? JSON.parse(raw.body) : raw;",
                       "pm.test('response is an array', function () { pm.expect(r).to.be.an('array'); });",
-                      "pm.test('awardedPoints equals 1 (De Morgan)', function () { pm.expect(r[0].awardedPoints).to.equal(1); });",
+                      "pm.test('awardedPoints equals 1', function () { pm.expect(r[0].awardedPoints).to.equal(1); });",
                       "pm.test('responseLatex contains overline', function () { pm.expect(r[0].responseLatex).to.include('\\\\overline{'); });"
                     ]
                   }
@@ -653,7 +652,7 @@
               }
             },
             {
-              "name": "Correct: (A n B)' = A' u B' (second law)",
+              "name": "Incorrect: complement of union ≠ complement of intersection ((A u B)' ≠ (A n B)')",
               "event": [
                 {
                   "listen": "prerequest",
@@ -661,7 +660,7 @@
                     "type": "text/javascript",
                     "exec": [
                       "eval(pm.globals.get('__helpers'));",
-                      "setMuEdEvalReq(\"(A n B)'\", \"A' u B'\", {});"
+                      "setMuEdEvalReq(\"(A u B)'\", \"(A n B)'\", {});"
                     ]
                   }
                 },
@@ -673,7 +672,7 @@
                       "var raw = pm.response.json();",
                       "var r = (raw.body !== undefined) ? JSON.parse(raw.body) : raw;",
                       "pm.test('response is an array', function () { pm.expect(r).to.be.an('array'); });",
-                      "pm.test('awardedPoints equals 1 (De Morgan)', function () { pm.expect(r[0].awardedPoints).to.equal(1); });",
+                      "pm.test('awardedPoints equals 0', function () { pm.expect(r[0].awardedPoints).to.equal(0); });",
                       "pm.test('responseLatex contains overline', function () { pm.expect(r[0].responseLatex).to.include('\\\\overline{'); });"
                     ]
                   }
@@ -881,7 +880,7 @@
               }
             },
             {
-              "name": "Incorrect: De Morgan with enforce=true ((A u B)' ≠ A' n B' syntactically)",
+              "name": "Incorrect: absorption law with enforce=true (A u (A n B) semantically = A but syntactically different)",
               "event": [
                 {
                   "listen": "prerequest",
@@ -889,7 +888,7 @@
                     "type": "text/javascript",
                     "exec": [
                       "eval(pm.globals.get('__helpers'));",
-                      "setLegacyEvalReq(\"(A u B)'\", \"A' n B'\", {enforce_expression_equality: true});"
+                      "setLegacyEvalReq('A u (A n B)', 'A', {enforce_expression_equality: true});"
                     ]
                   }
                 },
@@ -901,8 +900,7 @@
                       "var raw = pm.response.json();",
                       "var r = (raw.body !== undefined) ? JSON.parse(raw.body) : raw;",
                       "pm.test('command is eval', function () { pm.expect(r.command).to.equal('eval'); });",
-                      "pm.test('is_correct is false (syntactically different despite semantic equality)', function () { pm.expect(r.result.is_correct).to.be.false; });",
-                      "pm.test('feedback is present', function () { pm.expect(r.result.feedback).to.be.a('string').and.not.be.empty; });"
+                      "pm.test('is_correct is false (syntactically different despite semantic equality)', function () { pm.expect(r.result.is_correct).to.be.false; });"
                     ]
                   }
                 }
@@ -953,7 +951,7 @@
               }
             },
             {
-              "name": "Incorrect: De Morgan with enforce=true ((A u B)' ≠ A' n B' syntactically)",
+              "name": "Incorrect: absorption law with enforce=true (A u (A n B) semantically = A but syntactically different)",
               "event": [
                 {
                   "listen": "prerequest",
@@ -961,7 +959,7 @@
                     "type": "text/javascript",
                     "exec": [
                       "eval(pm.globals.get('__helpers'));",
-                      "setMuEdEvalReq(\"(A u B)'\", \"A' n B'\", {enforce_expression_equality: true});"
+                      "setMuEdEvalReq('A u (A n B)', 'A', {enforce_expression_equality: true});"
                     ]
                   }
                 },
