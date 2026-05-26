@@ -51,17 +51,6 @@
           "pm.collectionVariables.set('tc_commutative',      JSON.stringify({response:'B n A', answer:'A n B', params:{}}));"
         ]
       }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "exec": [
-          "pm.test('Response status is 200', function () {",
-          "    pm.response.to.have.status(200);",
-          "});"
-        ]
-      }
     }
   ],
   "item": [
@@ -104,9 +93,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -135,91 +142,22 @@
                       "var raw = pm.response.json();",
                       "var r = (raw.body !== undefined) ? JSON.parse(raw.body) : raw;",
                       "",
-                      "pm.test('command is healthcheck', function () {",
-                      "    pm.expect(r.command).to.equal('healthcheck');",
-                      "});",
-                      "pm.test('result is present', function () {",
-                      "    pm.expect(r).to.have.property('result');",
+                      "pm.test('tests_passed is a boolean', function () {",
+                      "    pm.expect(r.tests_passed).to.be.a('boolean');",
                       "});"
                     ]
                   }
                 }
               ],
               "request": {
-                "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
-              }
-            },
-            {
-              "name": "Missing submission → error",
-              "event": [
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "eval(pm.globals.get('__helpers'));",
-                      "setMuEdRawReq({task:{title:'Some Task'}}, '/evaluate');"
-                    ]
-                  }
-                },
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "var raw = pm.response.json();",
-                      "var r = (raw.body !== undefined) ? JSON.parse(raw.body) : raw;",
-                      "",
-                      "pm.test('response has error key', function () {",
-                      "    pm.expect(r).to.have.property('error');",
-                      "});"
-                    ]
-                  }
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
                 }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
-              }
-            },
-            {
-              "name": "Invalid submission type → error",
-              "event": [
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "eval(pm.globals.get('__helpers'));",
-                      "setMuEdRawReq({submission:{type:'INVALID',content:{}}}, '/evaluate');"
-                    ]
-                  }
-                },
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "var raw = pm.response.json();",
-                      "var r = (raw.body !== undefined) ? JSON.parse(raw.body) : raw;",
-                      "",
-                      "pm.test('response has error key', function () {",
-                      "    pm.expect(r).to.have.property('error');",
-                      "});"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
               }
             }
           ]
@@ -263,9 +201,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -299,9 +255,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -340,9 +314,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -376,9 +368,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -421,9 +431,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -455,9 +483,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -495,9 +541,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -529,9 +593,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -573,9 +655,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -607,9 +707,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -646,9 +764,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -680,9 +816,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -724,9 +878,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -758,9 +930,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -797,9 +987,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -831,9 +1039,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -874,9 +1100,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -907,9 +1151,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -945,9 +1207,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -978,9 +1258,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -1022,9 +1320,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -1056,9 +1372,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -1095,9 +1429,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -1129,9 +1481,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -1174,9 +1544,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -1208,9 +1596,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -1247,9 +1653,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -1280,9 +1704,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -1325,9 +1767,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -1359,9 +1819,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -1392,9 +1870,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
@@ -1432,9 +1928,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -1466,9 +1980,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             },
             {
@@ -1499,9 +2031,27 @@
               ],
               "request": {
                 "method": "POST",
-                "header": [{"key": "Content-Type", "value": "application/json"}],
-                "body": {"mode": "raw", "raw": "{{lambdaEvent}}", "options": {"raw": {"language": "json"}}},
-                "url": {"raw": "{{requestUrl}}", "host": ["{{requestUrl}}"]}
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{lambdaEvent}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{requestUrl}}",
+                  "host": [
+                    "{{requestUrl}}"
+                  ]
+                }
               }
             }
           ]
