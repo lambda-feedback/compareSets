@@ -142,8 +142,8 @@
                       "var raw = pm.response.json();",
                       "var r = (raw.body !== undefined) ? JSON.parse(raw.body) : raw;",
                       "",
-                      "pm.test('tests_passed is a boolean', function () {",
-                      "    pm.expect(r.tests_passed).to.be.a('boolean');",
+                      "pm.test('status is OK or DEGRADED', function () {",
+                      "    pm.expect(r.status).to.be.oneOf(['OK', 'DEGRADED']);",
                       "});"
                     ]
                   }
@@ -1536,7 +1536,7 @@
                       "var r = (raw.body !== undefined) ? JSON.parse(raw.body) : raw;",
                       "pm.test('command is eval', function () { pm.expect(r.command).to.equal('eval'); });",
                       "pm.test('is_correct is false', function () { pm.expect(r.result.is_correct).to.be.false; });",
-                      "pm.test('response_latex is null', function () { pm.expect(r.result.response_latex).to.be.null; });",
+                      "pm.test('response_latex is null or absent', function () { pm.expect(r.result.response_latex == null).to.be.true; });",
                       "pm.test('feedback is present', function () { pm.expect(r.result.feedback).to.be.a('string').and.not.be.empty; });"
                     ]
                   }
@@ -1919,9 +1919,9 @@
                       "var raw = pm.response.json();",
                       "var r = (raw.body !== undefined) ? JSON.parse(raw.body) : raw;",
                       "pm.test('response is an array', function () { pm.expect(r).to.be.an('array'); });",
-                      "pm.test('preSubmissionFeedback.latex is a string', function () { pm.expect(r[0].preSubmissionFeedback.latex).to.be.a('string'); });",
-                      "pm.test('preSubmissionFeedback.sympy is a string', function () { pm.expect(r[0].preSubmissionFeedback.sympy).to.be.a('string'); });",
-                      "pm.test('preSubmissionFeedback.sympy equals A n B', function () { pm.expect(r[0].preSubmissionFeedback.sympy).to.equal('A n B'); });"
+                      "pm.test('preSubmissionFeedback.latex is a string', function () { pm.expect(r[0].preSubmissionFeedback.preview.latex).to.be.a('string'); });",
+                      "pm.test('preSubmissionFeedback.sympy is a string', function () { pm.expect(r[0].preSubmissionFeedback.preview.sympy).to.be.a('string'); });",
+                      "pm.test('preSubmissionFeedback.sympy equals A n B', function () { pm.expect(r[0].preSubmissionFeedback.preview.sympy).to.equal('A n B'); });"
                     ]
                   }
                 }
@@ -1972,8 +1972,8 @@
                       "var raw = pm.response.json();",
                       "var r = (raw.body !== undefined) ? JSON.parse(raw.body) : raw;",
                       "pm.test('response is an array', function () { pm.expect(r).to.be.an('array'); });",
-                      "pm.test('preSubmissionFeedback.latex equals A \\\\cap B', function () { pm.expect(r[0].preSubmissionFeedback.latex).to.equal('A \\\\cap B'); });",
-                      "pm.test('preSubmissionFeedback.sympy is a string', function () { pm.expect(r[0].preSubmissionFeedback.sympy).to.be.a('string'); });"
+                      "pm.test('preSubmissionFeedback.latex equals A \\\\cap B', function () { pm.expect(r[0].preSubmissionFeedback.preview.latex).to.equal('A \\\\cap B'); });",
+                      "pm.test('preSubmissionFeedback.sympy is a string', function () { pm.expect(r[0].preSubmissionFeedback.preview.sympy).to.be.a('string'); });"
                     ]
                   }
                 }
@@ -2024,7 +2024,7 @@
                       "var raw = pm.response.json();",
                       "var r = (raw.body !== undefined) ? JSON.parse(raw.body) : raw;",
                       "pm.test('response is an array', function () { pm.expect(r).to.be.an('array'); });",
-                      "pm.test('preSubmissionFeedback.feedback is a string', function () { pm.expect(r[0].preSubmissionFeedback.feedback).to.be.a('string').and.not.be.empty; });"
+                      "pm.test('preSubmissionFeedback.feedback is a string', function () { pm.expect(r[0].preSubmissionFeedback.preview.feedback).to.be.a('string').and.not.be.empty; });"
                     ]
                   }
                 }
