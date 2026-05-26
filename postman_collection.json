@@ -8,15 +8,15 @@
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:9001/2015-03-31/functions/function/invocations",
+      "value": "http://localhost:8080/compareSets",
       "type": "string",
-      "description": "Change to your API Gateway URL for staging/prod testing"
+      "description": "Change to your API Gateway URL for staging/prod testing. For Lambda RIE use http://localhost:9001/2015-03-31/functions/function/invocations with mode=local"
     },
     {
       "key": "mode",
-      "value": "local",
+      "value": "direct",
       "type": "string",
-      "description": "Set to 'local' for Lambda RIE or 'cloud' for API Gateway"
+      "description": "Set to 'local' for Lambda RIE (wraps in Lambda event), 'direct' for shimmy/API Gateway"
     }
   ],
   "event": [
@@ -32,15 +32,15 @@
           "h += 'function buildEvent(b,p,method){p=p||\"/\";method=method||\"POST\";return{version:\"2.0\",routeKey:method+\" \"+p,rawPath:p,rawQueryString:\"\",path:p,headers:{\"content-type\":\"application/json\"},requestContext:{http:{method:method,path:p}},body:JSON.stringify(b),isBase64Encoded:false};}';",
           "h += 'function buildLegacyEvalEvent(r,a,p){return buildEvent({response:r,answer:a,params:p||{}},\"/\");}';",
           "h += 'function buildLegacyPreviewEvent(r,p){var e=buildEvent({response:r,params:p||{}},\"/\");e.headers[\"command\"]=\"preview\";return e;}';",
-          "h += 'function buildMuEdEvent(r,a,p,o){o=o||{};var t=o.type||\"MATH\",m={MATH:\"expression\",TEXT:\"text\",CODE:\"code\",MODEL:\"model\"},k=m[t]||\"value\",s={type:t,content:{}};s.content[k]=r;var b={submission:s};if(a!=null){var rf={type:t,content:{}};rf.content[k]=a;b.task={title:o.title||\"Evaluation Task\",referenceSolution:rf};}if(p&&Object.keys(p).length)b.configuration={params:p};if(o.user)b.user=o.user;if(o.criteria)b.criteria=o.criteria;return buildEvent(b,\"/evaluate\");}';",
-          "h += 'function buildMuEdPreviewEvent(r,p,o){o=o||{};var t=o.type||\"MATH\",m={MATH:\"expression\",TEXT:\"text\",CODE:\"code\",MODEL:\"model\"},k=m[t]||\"value\",s={type:t,content:{}};s.content[k]=r;var b={submission:s};if(p&&Object.keys(p).length)b.configuration={params:p};b.preSubmissionFeedback={enabled:true};return buildEvent(b,\"/evaluate\");}';",
+          "h += 'function buildMuEdEvent(r,a,p,o){o=o||{};var t=o.type||\\\"OTHER\\\",m={MATH:\"expression\",TEXT:\"text\",CODE:\"code\",MODEL:\"model\"},k=m[t]||\"value\",s={type:t,content:{}};s.content[k]=r;var b={submission:s};if(a!=null){var rf={type:t,content:{}};rf.content[k]=a;b.task={title:o.title||\"Evaluation Task\",referenceSolution:rf};}if(p&&Object.keys(p).length)b.configuration={params:p};if(o.user)b.user=o.user;if(o.criteria)b.criteria=o.criteria;return buildEvent(b,\"/evaluate\");}';",
+          "h += 'function buildMuEdPreviewEvent(r,p,o){o=o||{};var t=o.type||\\\"OTHER\\\",m={MATH:\"expression\",TEXT:\"text\",CODE:\"code\",MODEL:\"model\"},k=m[t]||\"value\",s={type:t,content:{}};s.content[k]=r;var b={submission:s};if(p&&Object.keys(p).length)b.configuration={params:p};b.preSubmissionFeedback={enabled:true};return buildEvent(b,\"/evaluate\");}';",
           "h += 'var __mode=pm.collectionVariables.get(\"mode\")||\"local\";';",
           "h += 'var __base=pm.collectionVariables.get(\"baseUrl\");';",
-          "h += 'function setLegacyEvalReq(r,a,p){if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildLegacyEvalEvent(r,a,p)));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify({response:r,answer:a,params:p||{}}));pm.variables.set(\"requestUrl\",__base);}}';",
+          "h += 'function setLegacyEvalReq(r,a,p){if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildLegacyEvalEvent(r,a,p)));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify({response:r,answer:a,params:p||{}}));pm.variables.set(\"requestUrl\",__base);pm.request.headers.add({key:\"command\",value:\"eval\"});}}';",
           "h += 'function setLegacyPreviewReq(r,p){if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildLegacyPreviewEvent(r,p)));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify({response:r,params:p||{}}));pm.variables.set(\"requestUrl\",__base);pm.request.headers.add({key:\"command\",value:\"preview\"});}}';",
           "h += 'function setLegacyHealthReq(){if(__mode===\"local\"){var e=buildEvent({},\"/\");e.headers[\"command\"]=\"healthcheck\";pm.variables.set(\"lambdaEvent\",JSON.stringify(e));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify({}));pm.variables.set(\"requestUrl\",__base);pm.request.headers.add({key:\"command\",value:\"healthcheck\"},true);}}';",
-          "h += 'function setMuEdEvalReq(r,a,p,o){o=o||{};var t=o.type||\"MATH\",m={MATH:\"expression\",TEXT:\"text\",CODE:\"code\",MODEL:\"model\"},k=m[t]||\"value\",s={type:t,content:{}};s.content[k]=r;var b={submission:s};if(a!=null){var rf={type:t,content:{}};rf.content[k]=a;b.task={title:o.title||\"Evaluation Task\",referenceSolution:rf};}if(p&&Object.keys(p).length)b.configuration={params:p};if(o.user)b.user=o.user;if(o.criteria)b.criteria=o.criteria;if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildEvent(b,\"/evaluate\")));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify(b));pm.variables.set(\"requestUrl\",__base+\"/evaluate\");}}';",
-          "h += 'function setMuEdPreviewReq(r,p,o){o=o||{};var t=o.type||\"MATH\",m={MATH:\"expression\",TEXT:\"text\",CODE:\"code\",MODEL:\"model\"},k=m[t]||\"value\",s={type:t,content:{}};s.content[k]=r;var b={submission:s};if(p&&Object.keys(p).length)b.configuration={params:p};b.preSubmissionFeedback={enabled:true};if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildEvent(b,\"/evaluate\")));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify(b));pm.variables.set(\"requestUrl\",__base+\"/evaluate\");}}';",
+          "h += 'function setMuEdEvalReq(r,a,p,o){o=o||{};var t=o.type||\\\"OTHER\\\",m={MATH:\"expression\",TEXT:\"text\",CODE:\"code\",MODEL:\"model\"},k=m[t]||\"value\",s={type:t,content:{}};s.content[k]=r;var b={submission:s};if(a!=null){var rf={type:t,content:{}};rf.content[k]=a;b.task={title:o.title||\"Evaluation Task\",referenceSolution:rf};}if(p&&Object.keys(p).length)b.configuration={params:p};if(o.user)b.user=o.user;if(o.criteria)b.criteria=o.criteria;if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildEvent(b,\"/evaluate\")));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify(b));pm.variables.set(\"requestUrl\",__base+\"/evaluate\");}}';",
+          "h += 'function setMuEdPreviewReq(r,p,o){o=o||{};var t=o.type||\\\"OTHER\\\",m={MATH:\"expression\",TEXT:\"text\",CODE:\"code\",MODEL:\"model\"},k=m[t]||\"value\",s={type:t,content:{}};s.content[k]=r;var b={submission:s};if(p&&Object.keys(p).length)b.configuration={params:p};b.preSubmissionFeedback={enabled:true};if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildEvent(b,\"/evaluate\")));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify(b));pm.variables.set(\"requestUrl\",__base+\"/evaluate\");}}';",
           "h += 'function setMuEdHealthReq(){if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildEvent({},\"/evaluate/health\",\"GET\")));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify({}));pm.variables.set(\"requestUrl\",__base+\"/evaluate/health\");}}';",
           "h += 'function setMuEdRawReq(body,path){if(__mode===\"local\"){pm.variables.set(\"lambdaEvent\",JSON.stringify(buildEvent(body,path)));pm.variables.set(\"requestUrl\",__base);}else{pm.variables.set(\"lambdaEvent\",JSON.stringify(body));pm.variables.set(\"requestUrl\",__base+path);}}';",
           "pm.globals.set('__helpers', h);",
