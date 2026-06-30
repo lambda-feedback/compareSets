@@ -1,4 +1,4 @@
-ARG BASE_VERSION=python:edge-3.2
+ARG BASE_VERSION=python:edge-3.12
 FROM ghcr.io/lambda-feedback/evaluation-function-base/$BASE_VERSION AS builder
 
 RUN pip install poetry==1.8.3
