@@ -126,3 +126,48 @@ class TestEvaluationFunction(unittest.TestCase):
         self.assertEqual(result.get("is_correct"), False)
         self.assertEqual(result.get("response_latex"), "\\overline{\\left(A \\cup B\\right)}")
         self.assertTrue(result.get("feedback"))
+
+    def test_set_notation(self):
+        response, answer, params = "{1,2} u {3,4}", "{1,2,3,4}", Params(is_set_notation=True)
+
+        result = evaluation_function(response, answer, params).to_dict()
+
+        self.assertEqual(result.get("is_correct"), True)
+        self.assertEqual(result.get("response_latex"), "\\{1,2\\} \\cup \\{3,4\\}")
+        self.assertFalse(result.get("feedback"))
+
+    def test_set_notation_symbols(self):
+        response, answer, params = "{a,b} u {c,d}", "{a,b,c,d}", Params(is_set_notation=True)
+
+        result = evaluation_function(response, answer, params).to_dict()
+
+        self.assertEqual(result.get("is_correct"), True)
+        self.assertEqual(result.get("response_latex"), "\\{a,b\\} \\cup \\{c,d\\}")
+        self.assertFalse(result.get("feedback"))
+
+    def test_set_notation_false(self):
+        response, answer, params = "{a,b} u {c,d}", "{a,b,c,d,e}", Params(is_set_notation=True)
+
+        result = evaluation_function(response, answer, params).to_dict()
+
+        self.assertEqual(result.get("is_correct"), False)
+        self.assertEqual(result.get("response_latex"), "\\{a,b\\} \\cup \\{c,d\\}")
+        self.assertTrue(result.get("feedback"))
+
+    def test_set_notation1(self):
+        response, answer, params = "{1,3} u {2,4}", "{1,2,3,4}", Params(is_set_notation=True)
+
+        result = evaluation_function(response, answer, params).to_dict()
+
+        self.assertEqual(result.get("is_correct"), True)
+        #self.assertEqual(result.get("response_latex"), "\\{a,b\\} \\cup \\{c,d\\}")
+        self.assertFalse(result.get("feedback"))
+
+    def test_set_notation_intersection(self):
+        response, answer, params = "{3,5,6,7} n {6,7,8}", "{6,7}", Params(is_set_notation=True)
+
+        result = evaluation_function(response, answer, params).to_dict()
+
+        self.assertEqual(result.get("is_correct"), True)
+        #self.assertEqual(result.get("response_latex"), "\\{a,b\\} \\cup \\{c,d\\}")
+        self.assertFalse(result.get("feedback"))
