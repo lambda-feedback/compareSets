@@ -3,7 +3,7 @@ from typing import Any
 from sympy import simplify_logic, Equivalent
 from lf_toolkit.evaluation import Result, Params
 from lf_toolkit.evaluation.progress import report_progress
-from lf_toolkit.parse.set import SetParser, LatexPrinter, SymPyBooleanTransformer, ASCIIPrinter
+from lf_toolkit.parse.set import SetParser, LatexPrinter, SymPyBooleanTransformer, ASCIIPrinter, SymPyTransformer
 
 from .parse import parse_with_feedback, FeedbackException
 
@@ -44,14 +44,16 @@ def evaluation_function(
     logger.debug("params   value=%r", params)
 
     parser = SetParser.instance()
-    sympyTransformer = SymPyBooleanTransformer()
 
     # here we want to compare the response set with the example solution set.
     # we have to do the following steps
 
     try:
         is_latex = params.get("is_latex", False)
+        is_set_notation = params.get("is_set_notation", False)
+        transformer = SymPyTransformer() if is_set_notation else SymPyBooleanTransformer()
         logger.debug("is_latex=%r", is_latex)
+        logger.debug("is_set_notation=%r", is_set_notation)
 
         report_progress("Parsing response and answer...")
 
@@ -59,7 +61,7 @@ def evaluation_function(
         logger.debug("parsing response...")
         responseSet = parse_with_feedback(response, latex=is_latex)
         logger.debug("responseSet=%r", responseSet)
-        responseSetSympy = sympyTransformer.transform(responseSet)
+        responseSetSympy = transformer.transform(responseSet)
         logger.debug("responseSetSympy=%r", responseSetSympy)
 
         # 2. convert the `answer`, which may be a latex string, to a sympy expression
@@ -71,7 +73,7 @@ def evaluation_function(
             logger.error("failed to parse answer: type=%s value=%r error=%r", type(answer).__name__, answer, e)
             raise FeedbackException() from e
         logger.debug("answerSet=%r", answerSet)
-        answerSetSympy = sympyTransformer.transform(answerSet)
+        answerSetSympy = transformer.transform(answerSet)
         logger.debug("answerSetSympy=%r", answerSetSympy)
 
         report_progress("Comparing sets for equivalence...")
@@ -79,7 +81,10 @@ def evaluation_function(
         # 3. compare the two sympy expressions w/ simplification enabled.
         #    If they are equal, the sets produced by the two expressions are
         #    semantically equal. However, the expressions may not be equal.
-        semantic_equal = simplify_logic(Equivalent(responseSetSympy, answerSetSympy)) == True
+        if is_set_notation:
+            semantic_equal = responseSetSympy == answerSetSympy
+        else:
+            semantic_equal = simplify_logic(Equivalent(responseSetSympy, answerSetSympy)) == True
         logger.debug("semantic_equal=%r", semantic_equal)
 
         # 4. compare the two sympy expressions w/ simplifaction disabled.
