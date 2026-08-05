@@ -2,6 +2,7 @@ import logging
 from typing import Any
 from sympy import simplify_logic, Equivalent
 from lf_toolkit.evaluation import Result, Params
+from lf_toolkit.evaluation.progress import report_progress
 from lf_toolkit.parse.set import SetParser, LatexPrinter, SymPyBooleanTransformer, ASCIIPrinter
 
 from .parse import parse_with_feedback, FeedbackException
@@ -52,6 +53,8 @@ def evaluation_function(
         is_latex = params.get("is_latex", False)
         logger.debug("is_latex=%r", is_latex)
 
+        report_progress("Parsing response and answer...")
+
         # 1. convert the `response`, which may be a latex string, to a sympy expression
         logger.debug("parsing response...")
         responseSet = parse_with_feedback(response, latex=is_latex)
@@ -70,6 +73,8 @@ def evaluation_function(
         logger.debug("answerSet=%r", answerSet)
         answerSetSympy = sympyTransformer.transform(answerSet)
         logger.debug("answerSetSympy=%r", answerSetSympy)
+
+        report_progress("Comparing sets for equivalence...")
 
         # 3. compare the two sympy expressions w/ simplification enabled.
         #    If they are equal, the sets produced by the two expressions are
