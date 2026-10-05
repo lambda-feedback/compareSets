@@ -100,14 +100,19 @@ class TestEvaluationFunction(unittest.TestCase):
         self.assertEqual(result.get("response_latex"), "A \\cap B")
         self.assertTrue(result.get("feedback"))
 
-    def test_returns_is_correct_false_not_parseable(self):
-        response, answer, params = "", "A u B", Params()
+    def test_unparseable_response_raises_value_error(self):
+        # a ValueError is reported by lf_toolkit as an invalid submission (422)
+        for response in ["", "A n "]:
+            with self.subTest(response=response):
+                with self.assertRaises(ValueError):
+                    evaluation_function(response, "A u B", Params())
 
-        result = evaluation_function(response, answer, params).to_dict()
+    def test_unparseable_answer_raises_non_value_error(self):
+        # must not be a ValueError, so it is reported as an internal error (500)
+        with self.assertRaises(RuntimeError) as ctx:
+            evaluation_function("A u B", "A n ", Params())
 
-        self.assertEqual(result.get("is_correct"), False)
-        self.assertEqual(result.get("response_latex"), None)
-        self.assertTrue(result.get("feedback"))
+        self.assertNotIsInstance(ctx.exception, ValueError)
 
     def test_syntactic_returns_is_correct_true_commutativity(self):
         response, answer, params = "A u B", "B u A", Params(enforce_expression_equality=True)
