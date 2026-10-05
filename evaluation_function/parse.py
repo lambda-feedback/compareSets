@@ -1,6 +1,8 @@
 from lf_toolkit.parse.set import SetParser, ParseError
 
-class FeedbackException(Exception):
+# Subclasses ValueError so that, when raised from the evaluation function,
+# lf_toolkit reports it as an invalid submission (422) rather than a 500.
+class FeedbackException(ValueError):
 
     def __str__(self):
         if isinstance(self.__cause__, ParseError):
