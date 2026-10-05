@@ -12,7 +12,7 @@ evaluation_function = "evaluation_function.main:main"
 [tool.poetry.dependencies]
 python = "^3.11"
 typing_extensions = "^4.12.2"
-lf_toolkit = { git = "https://github.com/lambda-feedback/toolkit-python.git", rev = "9d89276f4cf3dd943003aa765cb917e5ca20cfe0", extras = [
+lf_toolkit = { git = "https://github.com/lambda-feedback/toolkit-python.git", tag = "v1.2.0", extras = [
     "parsing",
     "ipc",
 ] }

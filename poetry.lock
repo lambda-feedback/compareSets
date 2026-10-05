@@ -1046,8 +1046,8 @@ parsing = ["antlr4-python3-runtime (==4.13.2)", "lark (==1.2.2)", "latex2sympy @
 [package.source]
 type = "git"
 url = "https://github.com/lambda-feedback/toolkit-python.git"
-reference = "9d89276f4cf3dd943003aa765cb917e5ca20cfe0"
-resolved_reference = "9d89276f4cf3dd943003aa765cb917e5ca20cfe0"
+reference = "v1.2.0"
+resolved_reference = "df5efa3735df67a75992e95b3a1c2e6df16a6752"
 
 [[package]]
 name = "mccabe"
@@ -2447,4 +2447,4 @@ cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and pyt
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "efae3e5cf2d15fe0cf2029ef63d96888d46c6bacd6ceca2cf28ae03e0ac56369"
+content-hash = "9ba667bb16098f2642edb6c8a2c19f50e419847beee907cf2d962a49826522d4"
